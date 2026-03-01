@@ -77,8 +77,7 @@ public class EnrollmentServiceImpl implements EnrollmentService {
 
         return enrollmentRepository.findByStudentId(courseId)
                 .stream()
-                .map(x->x.getStudent())
-                .toList();
+                .map(x->x.getStudent()).toList();
 
     }
 
