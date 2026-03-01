@@ -34,7 +34,7 @@ public class EnrollmentController {
         return enrollmentService.getCourseByStudent(studentId);
     }
 
-    @GetMapping("/courses/{studentId}")
+    @GetMapping("/student/{courseId}")
     public List<Student> getStudentByCourse(@PathVariable Long courseId){
         return enrollmentService.getStudentByCourse(courseId);
     }
