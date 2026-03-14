@@ -13,7 +13,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CourseController {
 
-    private final CourseServiceImpl courseService;
+    private final CourseService courseService;
 
     @GetMapping("/")
     public List<Course> getAllCourses(){
@@ -41,15 +41,3 @@ public class CourseController {
     }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-

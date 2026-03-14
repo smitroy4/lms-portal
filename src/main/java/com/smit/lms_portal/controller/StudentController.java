@@ -5,6 +5,8 @@ import com.smit.lms_portal.service.StudentService;
 import jakarta.validation.Valid;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,29 +19,29 @@ public class StudentController {
     private final StudentService studentService;
 
     @GetMapping("/")
-    public List<Student> getAllStudents(){
-        return studentService.getAllStudents();
+    public ResponseEntity<List<Student>> getAllStudents(){
+        return ResponseEntity.ok(studentService.getAllStudents());
     }
 
     @GetMapping("/{id}")
-    public Student getStudentById(@PathVariable("id") Long id){
-        return studentService.getStudentById(id);
+    public ResponseEntity<Student> getStudentById(@PathVariable("id") Long id){
+        return ResponseEntity.ok(studentService.getStudentById(id));
     }
 
     @PostMapping("/create")
-    public Student createStudent(@Valid @RequestBody Student student){
-        return studentService.createStudent(student);
+    public ResponseEntity<Student> createStudent(@Valid @RequestBody Student student){
+        return ResponseEntity.status(HttpStatus.CREATED).body(studentService.createStudent(student));
     }
 
     @PutMapping("/update/{id}")
-    public Student updateStudent(@PathVariable("id") Long id,
+    public ResponseEntity<Student> updateStudent(@PathVariable("id") Long id,
                                  @RequestBody Student student){
-        return studentService.updateStudent(id,student);
+        return ResponseEntity.ok(studentService.updateStudent(id,student));
     }
 
     @DeleteMapping("/delete/{id}")
-    public Student deleteStudent(@PathVariable("id") Long id){
-        return studentService.deleteStudent(id);
+    public ResponseEntity<Student> deleteStudent(@PathVariable("id") Long id){
+        return ResponseEntity.ok(studentService.deleteStudent(id));
     }
 
 }

@@ -6,6 +6,7 @@ import com.smit.lms_portal.entity.Student;
 import com.smit.lms_portal.repository.CourseRepository;
 import com.smit.lms_portal.repository.EnrollmentRepository;
 import com.smit.lms_portal.repository.StudentRepository;
+import com.smit.lms_portal.service.CourseService;
 import com.smit.lms_portal.service.EnrollmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -20,14 +21,16 @@ public class EnrollmentServiceImpl implements EnrollmentService {
     private final EnrollmentRepository enrollmentRepository;
     private final StudentRepository studentRepository;
     private final CourseRepository courseRepository;
+    private final CourseService courseService;
 
     @Autowired
     public EnrollmentServiceImpl(EnrollmentRepository enrollmentRepository,
                                  StudentRepository studentRepository,
-                                 CourseRepository courseRepository) {
+                                 CourseRepository courseRepository, CourseService courseService) {
         this.enrollmentRepository = enrollmentRepository;
         this.studentRepository = studentRepository;
         this.courseRepository = courseRepository;
+        this.courseService = courseService;
     }
 
     @Override
@@ -58,27 +61,27 @@ public class EnrollmentServiceImpl implements EnrollmentService {
     @Override
     public List<Course> getCourseByStudent(Long studentId) {
 
-        if(!studentRepository.existsById(studentId)){
+        if (!studentRepository.existsById(studentId)) {
             throw new RuntimeException("Student not found!");
         }
 
-        return enrollmentRepository.findByCourseId(studentId)
+        return enrollmentRepository.findByStudentId(studentId)
                 .stream()
-                .map(x->x.getCourse())
+                .map(x -> x.getCourse())
                 .toList();
     }
 
     @Override
     public List<Student> getStudentByCourse(Long courseId) {
 
-        if(!courseRepository.existsById(courseId)){
+        if (!courseRepository.existsById(courseId)) {
             throw new RuntimeException("Course does not exist!");
         }
 
-        return enrollmentRepository.findByStudentId(courseId)
+        return enrollmentRepository.findByCourseId(courseId)
                 .stream()
-                .map(x->x.getStudent()).toList();
-
+                .map(Enrollment::getStudent)
+                .toList();
     }
 
 }
