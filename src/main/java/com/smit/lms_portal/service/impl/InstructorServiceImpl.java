@@ -26,7 +26,8 @@ public class InstructorServiceImpl implements InstructorService {
 
     @Override
     public Instructor getInstructorById(Long id) {
-        return instructorRepository.findById(id).get();
+        return instructorRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Instructor not found with id: " + id));
     }
 
     @Override
@@ -36,8 +37,11 @@ public class InstructorServiceImpl implements InstructorService {
 
     @Override
     public Instructor deleteInstructorById(Long id) {
-        instructorRepository.deleteById(id);
-        return instructorRepository.findById(id).get();
+        Instructor instructor = instructorRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Instructor not found with id: " + id));
+
+        instructorRepository.delete(instructor);
+        return instructor;
     }
 
     @Override

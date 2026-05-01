@@ -28,7 +28,7 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public Course getCourseById(Long id) {
         return courseRepository.findById(id)
-                .get();
+                .orElseThrow(() -> new RuntimeException("Course not found with id: " + id));
     }
 
     @Override
@@ -38,9 +38,11 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public Course deleteCourse(Long id) {
-        courseRepository.deleteById(id);
-        return courseRepository.findById(id)
-                .get();
+        Course course = courseRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Course not found with id: " + id));
+
+        courseRepository.delete(course);
+        return course;
     }
 
     @Override

@@ -27,7 +27,8 @@ public class StudentServiceImpl implements StudentService {
 //    GET BY ID
     @Override
     public Student getStudentById(Long id) {
-        return studentRepository.findById(id).orElse(null);
+        return studentRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Student not found with id: " + id));
     }
 
 //    CREATE STUDENT
@@ -40,8 +41,11 @@ public class StudentServiceImpl implements StudentService {
 //    DELETE STUDENT
     @Override
     public Student deleteStudent(Long id) {
-        studentRepository.deleteById(id);
-        return studentRepository.findById(id).orElse(null);
+        Student student = studentRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Student not found with id: " + id));
+
+        studentRepository.delete(student);
+        return student;
     }
 
 //    UPDATE STUDENT
