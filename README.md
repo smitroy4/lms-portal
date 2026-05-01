@@ -1,138 +1,182 @@
-🏫 LMS Portal Backend
+# LMS Portal
 
-A scalable Learning Management System (LMS) backend built using Spring Boot, MySQL, and Spring Data JPA. This project provides RESTful APIs to manage students, instructors, courses, and enrollments, following clean architecture and real-world backend development practices.
+**A RESTful Learning Management System API** built with Spring Boot — managing students, courses, instructors, and enrollments with clean layered architecture and proper relational mapping.
 
-⚙️ Tech Stack
+---
 
-Backend: Spring Boot
+## Table of Contents
 
-Database: MySQL
+- [Overview](#overview)
+- [Tech Stack](#tech-stack)
+- [Architecture](#architecture)
+- [Features](#features)
+- [Data Model](#data-model)
+- [API Reference](#api-reference)
+- [Getting Started](#getting-started)
+- [Roadmap](#roadmap)
+- [Author](#author)
 
-ORM: Spring Data JPA (Hibernate)
+---
 
-Validation: Jakarta Validation
+## Overview
 
-Build Tool: Maven
+LMS Portal provides a backend foundation for a learning platform — handling student registrations, course management, instructor assignments, and enrollment tracking.
 
-Java Version: 21
+Designed to demonstrate real-world Spring Boot patterns: layered architecture, JPA relational mapping, input validation, and clean REST API design.
 
-📌 Features
+---
 
-✅ Student Management (CRUD)
+## Tech Stack
 
-✅ Instructor Management (CRUD)
+| Layer | Technology |
+|---|---|
+| Language | Java 21 |
+| Framework | Spring Boot 3 |
+| ORM | Spring Data JPA (Hibernate) |
+| Database | MySQL |
+| Build Tool | Maven |
+| Utilities | Lombok, Jakarta Validation |
 
-✅ Course Management (CRUD)
+---
 
-✅ Enrollment System (Student ↔ Course mapping)
+## Architecture
 
-✅ RESTful API design
+```
+Controller  →  Service  →  Repository  →  Entity
+   ↑               ↑             ↑            ↑
+HTTP layer   Business logic   JPA/DB     DB models
+```
 
-✅ Layered Architecture (Controller → Service → Repository)
+Standard layered architecture — each layer has a single responsibility and communicates only with the layer directly below it.
 
-✅ Input Validation using @Valid
+---
 
-✅ Clean and modular code structure
+## Features
 
-🧱 Project Structure
-lms-portal
-│
-├── controller
-├── service
-├── service.impl
-├── repository
-├── entity
-└── config (if applicable)
+**Student Management**
+- Full CRUD operations
+- Email-based lookup
+- Input validation via Jakarta annotations
 
-🔗 API Endpoints
-👨‍🎓 Student APIs
-Method	Endpoint	Description
-GET	/student/	Get all students
-GET	/student/{id}	Get student by ID
-POST	/student/create	Create student
-PUT	/student/update/{id}	Update student
-DELETE	/student/delete/{id}	Delete student
-👨‍🏫 Instructor APIs
-Method	Endpoint	Description
-GET	/instructor/	Get all instructors
-GET	/instructor/{id}	Get instructor by ID
-POST	/instructor/create	Create instructor
-PUT	/instructor/update/{id}	Update instructor
-DELETE	/instructor/delete/{id}	Delete instructor
-📚 Course APIs
-Method	Endpoint	Description
-GET	/course/	Get all courses
-GET	/course/{id}	Get course by ID
-POST	/course/create	Create course
-PUT	/course/update/{id}	Update course
-DELETE	/course/delete/{id}	Delete course
-🔄 Enrollment APIs
-Method	Endpoint	Description
-GET	/enrollment/	Get all enrollments
-POST	/enrollment/create?studentId=&courseId=	Enroll student in course
-GET	/enrollment/courses/{courseId}	Get courses by student (naming improvement needed)
-GET	/enrollment/student/{studentId}	Get students by course (naming improvement needed)
-🗄️ Database Configuration (MySQL)
+**Course Management**
+- Create and manage courses with pricing and descriptions
+- Assign courses to instructors
 
-Update your application.properties:
+**Instructor Management**
+- Full CRUD with expertise field support
 
-spring.datasource.url=jdbc:mysql://localhost:3306/[YOUR_DB_NAME]
-spring.datasource.username=[YOUR_USERNAME]
-spring.datasource.password=[YOUR_PASSWORD]
+**Enrollment System**
+- Enroll students into courses with duplicate prevention
+- Query courses by student and students by course
+- Enrollment date tracking
 
+---
+
+## Data Model
+
+**Entities:** `Student`, `Instructor`, `Course`, `Enrollment`
+
+**Relationships:**
+```
+Instructor  ──< Course
+Student     ──< Enrollment >── Course
+```
+
+- One `Instructor` → Many `Courses`
+- One `Student` → Many `Enrollments`
+- One `Course` → Many `Enrollments`
+
+---
+
+## API Reference
+
+### Students
+```
+GET    /student/
+GET    /student/{id}
+POST   /student/create
+PUT    /student/update/{id}
+DELETE /student/delete/{id}
+```
+
+### Courses
+```
+GET    /course/
+GET    /course/{id}
+POST   /course/create
+PUT    /course/update/{id}
+DELETE /course/delete/{id}
+```
+
+### Instructors
+```
+GET    /instructor/
+GET    /instructor/{id}
+POST   /instructor/create
+PUT    /instructor/update/{id}
+DELETE /instructor/delete/{id}
+```
+
+### Enrollments
+```
+GET    /enrollment/
+POST   /enrollment/create?studentId={id}&courseId={id}
+GET    /enrollment/courses/{courseId}      → courses enrolled by a student
+GET    /enrollment/student/{studentId}     → students enrolled in a course
+```
+
+---
+
+## Getting Started
+
+### Prerequisites
+- Java 21
+- MySQL running locally
+- Maven
+
+### Configuration
+
+Update `src/main/resources/application.properties`:
+
+```properties
+spring.datasource.url=jdbc:mysql://localhost:3306/lms-portal-db
+spring.datasource.username=your_username
+spring.datasource.password=your_password
 spring.jpa.hibernate.ddl-auto=update
-spring.jpa.show-sql=true
-spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQLDialect
+```
 
-▶️ How to Run
+### Run
 
-Clone the repository
-
-git clone [[REPO_LINK]](https://github.com/smitroy4/lms-portal)
-
-
-Navigate to project
-
+```bash
+git clone https://github.com/smitroy4/lms-portal.git
 cd lms-portal
+mvn spring-boot:run
+```
 
+API available at `http://localhost:8080/api/`
 
-Run the application
+### Sample Data
 
-Maven:
-./mvnw spring-boot:run
+A `data.sql` file preloads the database with 20 students, 8 instructors, 15 courses, and 40 enrollments for immediate testing.
 
-Gradle:
-./gradlew bootRun
+---
 
-🧪 Sample Request
-Create Student
-POST /student/create
+## Roadmap
 
-{
-  "name": "John Doe",
-  "email": "john@example.com"
-}
+- [ ] DTO layer to decouple entity exposure from API responses
+- [ ] Global exception handling (`@ControllerAdvice`)
+- [ ] Pagination and sorting on list endpoints
+- [ ] Spring Security + JWT authentication
+- [ ] Swagger / OpenAPI documentation
+- [ ] Docker deployment
 
-📈 Future Improvements
+---
 
-🔐 Add Spring Security + JWT Authentication
+## Author
 
-📄 Introduce DTO Layer (best practice)
+**Smit Roy**
+[github.com/smitroy4](https://github.com/smitroy4)
 
-🔄 Add Pagination & Sorting
+---
 
-⚠️ Global Exception Handling (@ControllerAdvice)
-
-📊 Logging (SLF4J)
-
-🧪 Unit Testing (JUnit + Mockito)
-
-📦 Docker support
-
-🌐 Deployment (AWS / Render)
-
-👨‍💻 Author
-
-Smit
-[[LinkedIn]](https://www.linkedin.com/in/smitroy22/)
-[[GitHub]](https://github.com/smitroy4)
+⭐ If this was helpful, feel free to star the repo.
