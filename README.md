@@ -2,6 +2,8 @@
 
 **A RESTful Learning Management System API** built with Spring Boot — managing students, courses, instructors, and enrollments with clean layered architecture and proper relational mapping.
 
+Containerized and deployed the application using Docker on Render with PostgreSQL integration - [LMS Portal API](https://lms-portal-backend-lug7.onrender.com/)
+
 ---
 
 ## Table of Contents
@@ -35,7 +37,7 @@ An interactive walkthrough of the project - [Spring Boot REST API Tutorial | Ser
 | Language | Java 21 |
 | Framework | Spring Boot 3 |
 | ORM | Spring Data JPA (Hibernate) |
-| Database | MySQL |
+| Database | PostgreSQL |
 | Build Tool | Maven |
 | Utilities | Lombok, Jakarta Validation |
 
@@ -133,7 +135,7 @@ GET    /enrollment/student/{studentId}     → students enrolled in a course
 
 ### Prerequisites
 - Java 21
-- MySQL running locally
+- PostgreSQL running locally
 - Maven
 
 ### Configuration
@@ -141,7 +143,7 @@ GET    /enrollment/student/{studentId}     → students enrolled in a course
 Update `src/main/resources/application.properties`:
 
 ```properties
-spring.datasource.url=jdbc:mysql://localhost:3306/lms-portal-db
+spring.datasource.url=jdbc:postgresql://localhost:5432/lms-portal-db
 spring.datasource.username=your_username
 spring.datasource.password=your_password
 spring.jpa.hibernate.ddl-auto=update
