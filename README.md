@@ -24,6 +24,8 @@ LMS Portal provides a backend foundation for a learning platform — handling st
 
 Designed to demonstrate real-world Spring Boot patterns: layered architecture, JPA relational mapping, input validation, and clean REST API design.
 
+An interactive walkthrough of the project - [Spring Boot REST API Tutorial | Service & Controller Layer | LMS Portal](https://youtu.be/HtQeggdmJxk?si=JTiHsTrQeHSibSh0)
+
 ---
 
 ## Tech Stack
